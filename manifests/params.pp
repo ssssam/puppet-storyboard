@@ -31,6 +31,9 @@ class storyboard::params () {
         $apache_version = '2.2'
       }
     }
+    'RedHat': {
+      $apache_version = '2.4'
+    }
     default: {
       fail("Unsupported osfamily: ${::osfamily} The 'storyboard' module only supports osfamily Debian.")
     }
