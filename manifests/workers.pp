@@ -19,14 +19,32 @@
 class storyboard::workers (
   $worker_count = 5,
   $use_upstart = false,
+  $use_systemd = false
 ) {
 
   include storyboard::params
 
+  $systemd_path = '/etc/systemd/system/storyboard-workers.service'
   $upstart_path = '/etc/init/storyboard-workers.conf'
   $sysvinit_path = '/etc/init.d/storyboard-workers'
 
-  if $use_upstart {
+  if $use_systemd {
+    file { $systemd_path:
+      ensure  => file,
+      owner   => root,
+      group   => root,
+      mode    => '0644',
+      content => template('storyboard/storyboard-workers.service.erb'),
+      notify  => Service['storyboard-workers'],
+      before  => Service['storyboard-workers'],
+    }
+    file { $upstart_path:
+      ensure => absent
+    }
+    file { $sysvinit_path:
+      ensure => absent
+    }
+  } elsif $use_upstart {
     file { $upstart_path:
       ensure  => file,
       owner   => root,
@@ -39,7 +57,13 @@ class storyboard::workers (
     file { $sysvinit_path:
       ensure => absent
     }
+    file { $systemd_path:
+      ensure => absent
+    }
   } else {
+    file { $systemd_path:
+      ensure => absent
+    }
     file { $upstart_path:
       ensure => absent
     }

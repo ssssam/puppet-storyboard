@@ -1,0 +1,15 @@
+[Unit]
+Description=Storyboard deferred processors
+Requires=network.target
+Requires=local-fs.target
+After=network.target
+After=local-fs.target
+
+[Service]
+# FIXME: it's not 'simple', but nothing should depend on this
+# service so I guess we should be OK ...
+Type=simple
+User=<%= scope.lookupvar("storyboard::params::user") %>
+Group=<%= scope.lookupvar("storyboard::params::group") %>
+ExecStart=/usr/bin/storyboard-worker-daemon --worker-count <%= @worker_count %>
+WorkingDirectory=/usr/local/bin
