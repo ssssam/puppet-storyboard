@@ -217,7 +217,8 @@ class storyboard::application (
       port     => 443,
       docroot  => $www_root,
       priority => '50',
-      template => 'storyboard/storyboard_https.vhost.erb',
+      # FIXME: .... fix .... meee...
+      #template => 'storyboard/storyboard_https.vhost.erb',
       ssl      => true,
     }
   } else {
@@ -226,7 +227,7 @@ class storyboard::application (
       port     => 80,
       docroot  => $www_root,
       priority => '50',
-      template => 'storyboard/storyboard_http.vhost.erb',
+      #template => 'storyboard/storyboard_http.vhost.erb',
       ssl      => false,
     }
   }
